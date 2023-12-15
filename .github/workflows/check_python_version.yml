@@ -1,16 +1,24 @@
-            - name: Check Python Version
-  # You may pin to the exact commit or the version.
-  # uses: samuelcolvin/check-python-version@758a13b52c26833cffda0f2ed4f3c9e54d9186d9
-  uses: samuelcolvin/check-python-version@v4.1
-  with:
-    # Path to python file containing the version number string
-    version_file_path: 
-    # Custom regular expression to find version with, defaults to `(?i)^(__version__|VERSION) *= *([\'"])v?(?P<version>.+?)\2`
+name: Check Python Version
 
-    version_pattern: # optional
-    # Version to check, defaults to using `GITHUB_REF` - this is mostly for testing
-    test_github_ref: # optional
-    # Set to "true" to skip environment variable (e.g. `GITHUB_REF`, or `input.test_github_ref`) check, mostly useful when you want to use outputs in later steps
+on:
+  push:
+    branches:
+      - main
 
-    skip_env_check: # optional
-          
+jobs:
+  check_python_version:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.11
+
+    - name: Update pip
+      run: |
+        python -m pip install --upgrade pip
+
+    - name: Display Python Version
+      run: |
+        python --version
